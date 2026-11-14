@@ -65,8 +65,8 @@ will be abroad for months.
 The lab keeps the role of workshop: code, staging and approval happen here.
 The connection goes one way:
 
-- ATL-Lab opens no connection to the VPS. The VPS pulls each approved release
-  itself, over HTTPS.
+- No shell access goes from the lab to ship a release: the VPS pulls each
+  approved release itself, over HTTPS.
 - Backups are exported encrypted on the VPS every night, and the lab pulls
   them through a read-only account. A restore has been tested.
 - The same gates apply: the commit tested in staging, an approval for that

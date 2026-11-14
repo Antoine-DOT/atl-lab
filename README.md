@@ -23,8 +23,9 @@ flowchart LR
     proxy -->|VPN clients only| preview[Staging]
     dev[Dev machine<br/>Claude Code, Codex] -->|archive only, no shell| site
     dev -->|restricted account| preview
-    dev -->|releases| vps[Malun production<br/>rented VPS, EU]
-    vps -.->|backups pulled by the lab| dev
+    dev -->|approved release| gh[GitHub]
+    vps[Malun production<br/>rented VPS, EU] -->|pulls the release, HTTPS| gh
+    fw -.->|backups pulled, read-only| vps
     observer[Observer<br/>read-only] -.-> proxy & site & preview & dev
 ```
 
