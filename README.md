@@ -5,9 +5,10 @@ one way in from the Internet, controlled releases, read-only monitoring, and
 AI agents that work within strict limits.
 
 It is not a sandbox I rebuild every month. It hosts services that are actually
-used: my [personal site](https://antoineleflon.com), a Mandarin learning app
-(Malun) with its identity provider, a private staging platform, and the
-development machine where Claude Code and Codex work.
+used: my [personal site](https://antoineleflon.com), a private staging platform,
+and the development machine where Claude Code and Codex work. Malun, my
+Mandarin learning app, is prepared and tested here, then runs in production
+on a rented VPS in the EU (see [Architecture](docs/architecture.md)).
 
 This repository documents how it is built and why. Addresses, VLAN IDs, rule
 IDs and anything else that would help an attacker map the network are left
@@ -19,10 +20,11 @@ flowchart LR
     router --> fw{{Firewall<br/>default deny}}
     fw --> proxy[Reverse proxy<br/>TLS, no app, no data]
     proxy --> site[Static site]
-    proxy -->|one port| app[Malun + Keycloak]
     proxy -->|VPN clients only| preview[Staging]
     dev[Dev machine<br/>Claude Code, Codex] -->|archive only, no shell| site
     dev -->|restricted account| preview
+    dev -->|releases| vps[Malun production<br/>rented VPS, EU]
+    vps -.->|backups pulled by the lab| dev
     observer[Observer<br/>read-only] -.-> proxy & site & app & preview & dev
 ```
 
