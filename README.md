@@ -25,7 +25,7 @@ flowchart LR
     dev -->|restricted account| preview
     dev -->|releases| vps[Malun production<br/>rented VPS, EU]
     vps -.->|backups pulled by the lab| dev
-    observer[Observer<br/>read-only] -.-> proxy & site & app & preview & dev
+    observer[Observer<br/>read-only] -.-> proxy & site & preview & dev
 ```
 
 ## Contents

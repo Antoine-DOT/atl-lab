@@ -30,7 +30,7 @@ input and refuses anything else.
 | Staging controller update | Install an exact commit of the controller, or roll back | Run any other command; the updater cannot update itself |
 | Observer queries | A fixed list of read operations, validated on the Observer side | Pick a destination, a command, a path or a credential |
 | Changes through Observer | Install a bundle, only with a manifest I signed | Sign anything: the signing key stays on my Mac |
-| Malun production | Operate the app with sudo limited to that app | Release or roll back without my approval |
+| Malun production | Inspect and operate the app within the runbooks | Release or roll back without my approval |
 
 Firewall changes follow the same pattern: a dedicated tool applies a rule
 tied to a ticket, and a human confirms each transaction. It cannot touch NAT.

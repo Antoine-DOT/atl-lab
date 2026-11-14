@@ -9,7 +9,7 @@ the firewall, which drops anything not explicitly allowed.
 | Zone | What lives there | Who can reach it |
 | --- | --- | --- |
 | **Public** | Reverse proxy, static site, staging platform | The Internet reaches the proxy only. Staging answers VPN clients only. |
-| **Applications** | Malun, its PostgreSQL database, Keycloak | The proxy, on a single port, to a single machine |
+| **Applications** | Nothing in production today. Malun used to run here and its old VM is stopped, kept briefly as a fallback | The proxy, on a single port, to a single machine |
 | **Core** | DNS, time, logs, metrics, SSH bastion | The services everything else depends on |
 | **Dev & AI** | Development machine, AI agents, shared memory | Where changes are prepared, tested and documented |
 | **Observation** | Observer | Reads every zone, can change nothing |
@@ -28,9 +28,10 @@ needs them (the firewall, Observer, the dev machine).
    and no data.
 5. A small container (1 core, 512 MB) serves static files.
 
-The application zone is only reachable from the proxy, on one port. The
-identity provider is only exposed through an allowlist of paths: admin
-consoles and the endpoints the app does not need return 404 at the proxy.
+The application zone is only reachable from the proxy, on one port. When Malun
+ran here, its identity provider was only exposed through an allowlist of
+paths: admin consoles and the endpoints the app does not need returned 404 at
+the proxy.
 
 DNS is split: internal names resolve to internal addresses from inside the
 lab and over the VPN, public names resolve normally.
@@ -53,6 +54,23 @@ Two rules tie them together:
 A real case: a release failed its final check right after the switch. It
 rolled back on its own, the fix went through staging again, and the release
 succeeded the same day.
+
+## Production outside the lab
+
+Since November 2026, Malun's production runs on a rented VPS in the EU
+(application, PostgreSQL and Keycloak), not in the lab. A mobile app needs an
+uptime and a network path that a home connection does not guarantee, and I
+will be abroad for months.
+
+The lab keeps the role of workshop: code, staging and approval happen here.
+The connection goes one way:
+
+- ATL-Lab opens no connection to the VPS. The VPS pulls each approved release
+  itself, over HTTPS.
+- Backups are exported encrypted on the VPS every night, and the lab pulls
+  them through a read-only account. A restore has been tested.
+- The same gates apply: the commit tested in staging, an approval for that
+  exact commit, and a backup checked before the migrations.
 
 ## How a release ships
 
